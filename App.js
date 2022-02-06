@@ -1,21 +1,13 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
+//import Screens and Components
+import LoginScreen from './src/screens/LoginScreen';
 
 const App = () => {
   return (
     <SafeAreaView style={styles.body}>
-      <StatusBar />
-      <View>
-        <Text>Let's Start</Text>
-      </View>
+      <StatusBar hidden />
+      <LoginScreen />
     </SafeAreaView>
   );
 };
