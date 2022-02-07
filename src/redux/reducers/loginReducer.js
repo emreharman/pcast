@@ -32,6 +32,6 @@ export const loginReducer = (state = initialState, action) => {
       };
 
     default:
-      break;
+      return state;
   }
 };

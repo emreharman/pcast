@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,47 @@ import {
   TextInput,
   Pressable,
   Keyboard,
+  Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import axios from 'axios';
+//import utils
+import {validateEmail} from '../utils/validateEmail';
+//import redux stuff
+import {
+  loginStart,
+  loginSuccess,
+  loginFail,
+} from '../redux/actions/loginActions';
+import {useSelector, useDispatch} from 'react-redux';
 
 const LoginScreen = () => {
+  const dispatch = useDispatch();
+  const loginState = useSelector(state => state.loginState);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = () => {
+    dispatch(loginStart());
+    if (email === '' || password === '') {
+      Alert.alert("Email or password can't be empty.");
+      return;
+    }
+    if (!validateEmail(email)) {
+      Alert.alert('Email format is wrong.');
+      return;
+    }
+    axios
+      .post('https://nox-podcast-api.vercel.app/login', {email, password})
+      .then(res => {
+        Alert.alert('Login successful');
+        dispatch(loginSuccess(res.data.access_token));
+      })
+      .catch(err => {
+        Alert.alert('Email or password is wrong!');
+        dispatch(loginFail(err.message));
+      });
+  };
   return (
     <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
       <ImageBackground
@@ -45,6 +82,9 @@ const LoginScreen = () => {
               style={styles.inputText}
               placeholderTextColor="rgba(137, 143, 151, 1)"
               placeholder="E-mail address"
+              value={email}
+              onChangeText={text => setEmail(text)}
+              keyboardType="email-address"
             />
           </View>
           <View style={[styles.inputContainer, styles.mt16]}>
@@ -56,9 +96,12 @@ const LoginScreen = () => {
               style={styles.inputText}
               placeholderTextColor="rgba(137, 143, 151, 1)"
               placeholder="Password"
+              value={password}
+              onChangeText={text => setPassword(text)}
+              secureTextEntry={true}
             />
           </View>
-          <Pressable style={styles.loginBtnContainer}>
+          <Pressable style={styles.loginBtnContainer} onPress={handleSubmit}>
             <Text style={styles.loginBtnText}>Login</Text>
           </Pressable>
         </LinearGradient>

@@ -4,7 +4,7 @@ export const loginStart = () => {
   return {type: LOGIN_START};
 };
 export const loginSuccess = token => {
-  return {type: LOGIN_FAIL, payload: token};
+  return {type: LOGIN_SUCCESS, payload: token};
 };
 export const loginFail = error => {
   return {type: LOGIN_FAIL, payload: error};
