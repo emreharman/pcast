@@ -7,12 +7,14 @@ import {
   Image,
   TextInput,
   Pressable,
+  Keyboard,
+  KeyboardAvoidingView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const LoginScreen = () => {
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
       <ImageBackground
         style={styles.image}
         source={require('../assets/img/loginBg.png')}>
@@ -62,7 +64,7 @@ const LoginScreen = () => {
           </Pressable>
         </LinearGradient>
       </ImageBackground>
-    </View>
+    </Pressable>
   );
 };
 
@@ -116,6 +118,7 @@ const styles = StyleSheet.create({
   },
   inputText: {
     color: 'rgba(137, 143, 151, 1)',
+    flex: 1,
   },
   mt16: {
     marginTop: 16,
