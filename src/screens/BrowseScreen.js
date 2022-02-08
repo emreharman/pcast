@@ -7,14 +7,21 @@ import {
   Image,
   TextInput,
   Keyboard,
+  FlatList,
 } from 'react-native';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
+
+import {flatListItems} from '../utils/flatListItems';
+import FlatListItem from '../components/FlatListItem';
+import Podcast from '../components/Podcast';
 
 const BrowseScreen = () => {
   const searchRef = useRef(null);
   const loginState = useSelector(state => state.loginState);
   const [podcasts, setPodcasts] = useState('');
+  const [selectedFlatListItem, setSelectedFlatListItem] = useState('Podcasts');
+  console.log(selectedFlatListItem);
   useEffect(() => {
     axios
       .get('https://nox-podcast-api.vercel.app/search', {
@@ -53,6 +60,32 @@ const BrowseScreen = () => {
           />
         </Pressable>
       </View>
+      <FlatList
+        style={styles.flatList}
+        extraData={selectedFlatListItem}
+        data={flatListItems}
+        keyExtractor={item => item.id}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        renderItem={({item}) => (
+          <FlatListItem
+            item={item}
+            setSelectedFlatListItem={setSelectedFlatListItem}
+            selectedFlatListItem={selectedFlatListItem}
+          />
+        )}
+      />
+      <View>
+        <Text style={styles.selectedText}>
+          {selectedFlatListItem} ({podcasts.length})
+        </Text>
+      </View>
+      <FlatList
+        data={podcasts}
+        style={styles.podcastsFlatList}
+        keyExtractor={(item, index) => index}
+        renderItem={({item}) => <Podcast podcast={item} />}
+      />
     </Pressable>
   );
 };
@@ -61,7 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(9, 18, 28, 1)',
     paddingHorizontal: 33,
-    paddingVertical: 53,
+    paddingVertical: 30,
   },
   logoContainer: {
     width: 90,
@@ -75,14 +108,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Bold',
     fontSize: 48,
     color: '#fff',
-    marginTop: 35,
+    marginTop: 30,
   },
   searchContainer: {
     width: '100%',
     height: 48,
     backgroundColor: 'rgba(1,3,4,1)',
     borderRadius: 16,
-    marginTop: 32,
+    marginTop: 30,
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
@@ -97,6 +130,20 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Roboto-Medium',
     fontSize: 14,
+  },
+  flatList: {
+    height: 90,
+    marginTop: 32,
+    flexGrow: 0,
+  },
+  selectedText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 16,
+    color: 'rgba(137,143,151,1)',
+    marginVertical: 20,
+  },
+  podcastsFlatList: {
+    flex: 1,
   },
 });
 export default BrowseScreen;
