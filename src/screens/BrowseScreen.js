@@ -21,7 +21,9 @@ const BrowseScreen = () => {
   const loginState = useSelector(state => state.loginState);
   const [podcasts, setPodcasts] = useState('');
   const [selectedFlatListItem, setSelectedFlatListItem] = useState('Podcasts');
-  console.log(selectedFlatListItem);
+  const [query, setQuery] = useState('');
+  let filteredPods = '';
+
   useEffect(() => {
     axios
       .get('https://nox-podcast-api.vercel.app/search', {
@@ -36,7 +38,28 @@ const BrowseScreen = () => {
         console.log(err);
       });
   }, []);
+
   if (podcasts === '') return null;
+  filteredPods = podcasts;
+  if (query !== '' && selectedFlatListItem === 'Podcasts') {
+    filteredPods = filteredPods.filter(pod => {
+      if (pod.title.toLowerCase().includes(query)) return true;
+      else return false;
+    });
+  }
+  if (query !== '' && selectedFlatListItem === 'Categories') {
+    filteredPods = filteredPods.filter(pod => {
+      if (pod.category.toLowerCase().includes(query)) return true;
+      else return false;
+    });
+  }
+  if (query !== '' && selectedFlatListItem === 'Authors') {
+    filteredPods = filteredPods.filter(pod => {
+      if (pod.author.toLowerCase().includes(query)) return true;
+      else return false;
+    });
+  }
+
   return (
     <Pressable style={styles.body} onPress={() => Keyboard.dismiss()}>
       <View style={styles.logoContainer}>
@@ -52,6 +75,8 @@ const BrowseScreen = () => {
           placeholderTextColor="#fff"
           ref={searchRef}
           selectionColor="#fff"
+          value={query}
+          onChangeText={text => setQuery(text)}
         />
         <Pressable onPress={() => searchRef.current.focus()}>
           <Image
@@ -77,11 +102,11 @@ const BrowseScreen = () => {
       />
       <View>
         <Text style={styles.selectedText}>
-          {selectedFlatListItem} ({podcasts.length})
+          {selectedFlatListItem} ({filteredPods.length})
         </Text>
       </View>
       <FlatList
-        data={podcasts}
+        data={filteredPods}
         style={styles.podcastsFlatList}
         keyExtractor={(item, index) => index}
         renderItem={({item}) => <Podcast podcast={item} />}
@@ -133,7 +158,7 @@ const styles = StyleSheet.create({
   },
   flatList: {
     height: 90,
-    marginTop: 32,
+    marginTop: 30,
     flexGrow: 0,
   },
   selectedText: {
