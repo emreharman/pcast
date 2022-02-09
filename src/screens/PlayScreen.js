@@ -14,7 +14,7 @@ import {Slider} from '@miblanchard/react-native-slider';
 import {toHHMMSS} from '../utils/toHHMMSS';
 
 const PlayScreen = ({navigation, route}) => {
-  const {podcast} = route.params;
+  const podcast = route.params;
   const [pod, setPod] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -68,7 +68,10 @@ const PlayScreen = ({navigation, route}) => {
                   source={require('../assets/img/back.png')}
                 />
               </Pressable>
-              <Pressable>
+              <Pressable
+                onPress={() => {
+                  navigation.toggleDrawer();
+                }}>
                 <Image
                   style={styles.hmenuIcon}
                   source={require('../assets/img/hmenu.png')}
@@ -143,7 +146,7 @@ const PlayScreen = ({navigation, route}) => {
           }}
           containerStyle={{width: '100%', marginTop: 30}}
           thumbStyle={{backgroundColor: '#3369ff'}}
-          trackStyle={{backgroundColor: '#fff'}}
+          // trackStyle={{backgroundColor: '#fff'}}
         />
         <View style={styles.likesContainer}>
           <View style={styles.likeContainer}>
@@ -184,12 +187,12 @@ const PlayScreen = ({navigation, route}) => {
             />
             <Text style={styles.episodeText}>{podcast.file_size} mb</Text>
           </View>
-          <View>
+          <Pressable>
             <Image
               source={require('../assets/img/dots.png')}
               style={{width: 4, height: 16}}
             />
-          </View>
+          </Pressable>
         </View>
         <Text style={styles.description}>{podcast.description}</Text>
       </View>

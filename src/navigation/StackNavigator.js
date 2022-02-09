@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import BrowseScreen from '../screens/BrowseScreen';
 import PlayScreen from '../screens/PlayScreen';
+import DrawerNavigation from './DrawerNavigation';
 
 const Stack = createStackNavigator();
 
@@ -16,8 +17,8 @@ export default function StackNavigator() {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="Play"
-          component={PlayScreen}
+          name="Drawer"
+          component={DrawerNavigation}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

@@ -47,7 +47,7 @@ const Podcast = props => {
             </View>
             <Pressable
               style={styles.playIconContainer}
-              onPress={() => navigation.navigate('Play', {podcast})}>
+              onPress={() => navigation.navigate('Drawer', {podcast})}>
               <Image
                 style={styles.playIcon}
                 source={require('../assets/img/Play.png')}
