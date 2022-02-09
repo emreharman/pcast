@@ -16,7 +16,8 @@ import {flatListItems} from '../utils/flatListItems';
 import FlatListItem from '../components/FlatListItem';
 import Podcast from '../components/Podcast';
 
-const BrowseScreen = () => {
+const BrowseScreen = props => {
+  const {navigation} = props;
   const searchRef = useRef(null);
   const loginState = useSelector(state => state.loginState);
   const [podcasts, setPodcasts] = useState('');
@@ -109,7 +110,9 @@ const BrowseScreen = () => {
         data={filteredPods}
         style={styles.podcastsFlatList}
         keyExtractor={(item, index) => index}
-        renderItem={({item}) => <Podcast podcast={item} />}
+        renderItem={({item}) => (
+          <Podcast podcast={item} navigation={navigation} />
+        )}
       />
     </Pressable>
   );

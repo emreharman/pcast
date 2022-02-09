@@ -10,7 +10,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 
 const Podcast = props => {
-  const {podcast} = props;
+  const {podcast, navigation} = props;
   return (
     <Pressable style={styles.container}>
       <ImageBackground
@@ -45,7 +45,9 @@ const Podcast = props => {
                 <Text style={styles.authorText}>{podcast.author}</Text>
               </View>
             </View>
-            <Pressable style={styles.playIconContainer}>
+            <Pressable
+              style={styles.playIconContainer}
+              onPress={() => navigation.navigate('Play', {podcast})}>
               <Image
                 style={styles.playIcon}
                 source={require('../assets/img/Play.png')}
