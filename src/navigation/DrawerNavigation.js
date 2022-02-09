@@ -21,7 +21,7 @@ const DrawerNavigation = ({navigation, route}) => {
         drawerActiveBackgroundColor: 'rgba(137, 143, 151, 1)',
         drawerActiveTintColor: '#fff',
         drawerInactiveTintColor: 'rgba(137, 143, 151, 1)',
-        drawerPosition: 'left',
+        drawerType: 'slide',
       }}>
       <Drawer.Screen
         name="Play"
