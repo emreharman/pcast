@@ -24,7 +24,7 @@ const DrawerNavigation = ({navigation, route}) => {
         drawerType: 'slide',
       }}>
       <Drawer.Screen
-        name="Play"
+        name="Player"
         component={PlayScreen}
         initialParams={podcast}
       />
