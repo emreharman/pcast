@@ -12,6 +12,8 @@ target 'pcast' do
     :hermes_enabled => false
   )
 
+  pod 'RNSound', :path => '../node_modules/react-native-sound'
+
   target 'pcastTests' do
     inherit! :complete
     # Pods for testing

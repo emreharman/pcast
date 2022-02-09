@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,9 +8,25 @@ import {
   ImageBackground,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Sound from 'react-native-sound';
 
 const PlayScreen = ({navigation, route}) => {
   const {podcast} = route.params;
+  const [pod, setPod] = useState('');
+  const [isPlaying, setIsPlaying] = useState(false);
+  useEffect(() => {
+    const track = new Sound(podcast.audio_url, null, e => {
+      if (e) {
+        console.log('error loading track:', e);
+      } else {
+        track.play();
+      }
+    });
+    setPod(track);
+    //track.play();
+    setIsPlaying(true);
+  }, []);
+  if (pod === '') return null;
   return (
     <View style={styles.body}>
       <View style={styles.playHeaderContainer}>
@@ -22,7 +38,11 @@ const PlayScreen = ({navigation, route}) => {
             colors={['rgba(9,18,28,0.8)', 'rgba(9,18,28,0)']}
             locations={[1, 1]}>
             <View style={styles.headerButtons}>
-              <Pressable onPress={() => navigation.navigate('Browse')}>
+              <Pressable
+                onPress={() => {
+                  pod.stop();
+                  navigation.navigate('Browse');
+                }}>
                 <Image
                   style={styles.backIcon}
                   source={require('../assets/img/back.png')}
@@ -46,12 +66,29 @@ const PlayScreen = ({navigation, route}) => {
                   source={require('../assets/img/prev.png')}
                 />
               </Pressable>
-              <Pressable>
-                <Image
-                  style={styles.playPauseIcon}
-                  source={require('../assets/img/Pause.png')}
-                />
-              </Pressable>
+              {isPlaying ? (
+                <Pressable
+                  onPress={() => {
+                    pod.pause();
+                    setIsPlaying(false);
+                  }}>
+                  <Image
+                    style={styles.playPauseIcon}
+                    source={require('../assets/img/Pause.png')}
+                  />
+                </Pressable>
+              ) : (
+                <Pressable
+                  onPress={() => {
+                    pod.play();
+                    setIsPlaying(true);
+                  }}>
+                  <Image
+                    style={styles.playPauseIcon}
+                    source={require('../assets/img/Play.png')}
+                  />
+                </Pressable>
+              )}
               <Pressable>
                 <Image
                   style={styles.preFrwIcons}
